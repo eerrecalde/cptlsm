@@ -1,0 +1,8 @@
+/*.md-theme-default.md-button:not([disabled]).md-primary.md-raised, .md-theme-default.md-button:not([disabled]).md-primary.md-fab { background: #000 !important; }*/
+
+.page-enter-active, .page-leave-active {
+  transition: opacity .1s;
+}
+.page-enter, .page-leave-to {
+  opacity: 0;
+}
