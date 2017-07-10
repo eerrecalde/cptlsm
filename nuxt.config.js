@@ -11,15 +11,10 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic' },
+      { rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic+Raleway:300,400,600,700%7COpen+Sans:300,400,600,700%7CHandlee' },
       { rel: 'stylesheet', href: '//fonts.googleapis.com/icon?family=Material+Icons' }
     ]
   },
-
-  // Shared Styles
-  css: [
-    'assets/main.css'
-  ],
 
   router: {
     linkExactActiveClass: 'md-toggle'
@@ -32,7 +27,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: ['axios', 'vue-material', 'vue-highcharts'],
+    vendor: ['axios', 'vuetify', 'vue-highcharts'],
     /*
     ** Run ESLINT on save
     */
@@ -50,7 +45,13 @@ module.exports = {
 
   plugins: [
     // ssr: false to only include it on client-side
-    { src: '~plugins/vue-material.js', ssr: false },
+    // { src: '~plugins/vue-material.js', ssr: false },
+    { src: '~plugins/vuetify.js', ssr: false },
     { src: '~plugins/vue-highcharts.js', ssr: true }
+  ],
+
+  // Shared Styles
+  css: [
+    { src: 'assets/styles/app.styl', lang: 'styl' }
   ]
 }

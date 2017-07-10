@@ -10,7 +10,7 @@
     "highcharts-3d": "^0.1.2",
     "nuxt": "latest",
     "vue-highcharts": "0.0.10",
-    "vue-material": "^0.7.4"
+    "vuetify": "^0.13.0"
   },
   "scripts": {
     "dev": "nuxt",
@@ -22,11 +22,15 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
+    "css-loader": "^0.28.4",
     "eslint": "^3.15.0",
     "eslint-config-standard": "^6.2.1",
     "eslint-loader": "^1.6.1",
     "eslint-plugin-html": "^2.0.0",
     "eslint-plugin-promise": "^3.4.1",
-    "eslint-plugin-standard": "^2.0.1"
+    "eslint-plugin-standard": "^2.0.1",
+    "style-loader": "^0.18.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
   }
 }

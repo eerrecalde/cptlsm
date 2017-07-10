@@ -1,8 +1,7 @@
 <template lang="html">
   <div>
     <h3>Hello About</h3>
-    <md-button class="md-raised md-accent">Primary</md-button>
-
+    
     <highcharts :options="options" ref="highcharts"></highcharts>
   </div>
 </template>
