@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-layout row wrap justify-space-between>
+    <v-layout row wrap>
       <v-flex xs12 md3>
-        <v-card tile>
+        <v-card tile class="card--equal-hight">
           <v-card-title>
             <h5>My Funds</h5>
           </v-card-title>
@@ -21,22 +21,20 @@
             </v-list-tile>
           </v-list>
 
-          <v-layout md-align="end" md-vertical-align="end">
-            <v-card-actions>
-              <v-btn flat dark secondary>+ Add fund</v-btn>
-            </v-card-actions>
-          </v-layout>
+          <v-card-actions class="card-actions--bottom">
+            <v-btn flat dark secondary>+ Add fund</v-btn>
+          </v-card-actions>
         </v-card>
       </v-flex>
       <v-flex>
         <v-card tile>
           <v-card-title>
-            <h5>Resolutions - <small><i>{{selectedFund.name}}</i></small></h5>
+            <h5>Resolutions <span class="fund-name">{{selectedFund.name}}</span></h5>
           </v-card-title>
 
           <v-data-table
-            v-bind:headers="tableHeaders"
-            :items="resolutions[selectedFund.id]"
+            v-bind:headers="resolutions.headers"
+            :items="resolutions.data[selectedFund.id]"
             hide-actions
             class="elevation-1"
           >
@@ -56,7 +54,9 @@
                 </div>
               </td>
               <td class="chart-wrapper">
-                <a href="" v-if="props.item.chart" @click.prevent="() => showChart(props.item.chart.props)">{{props.item.chart.text}}</a>
+                <v-btn icon class="light-green--text" v-if="props.item.chart" @click.native="() => showChart(props.item.chart.props)" v-tooltip:right="{ 'html': props.item.chart.text }">
+                  <v-icon>equalizer</v-icon>
+                </v-btn>
                 <v-card class="chart-container" v-if="props.item.chart && chartOptions">
                   <button class="chart-close" @click="chartOptions = null">&times;</button>
                   <highcharts :options="chartOptions" ref="highcharts"></highcharts>
@@ -75,256 +75,48 @@
 
 <script>
 import Logo from '~components/Logo.vue'
+import chartDefaults from '~/api/chartDefaultsMock'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Logo
   },
-  watch: {
-    items () {
-      console.log('ITEMS CHANGED')
-    }
-  },
   data () {
     return {
       items: null,
-      chartDefaults: {
-        chart: {
-          type: 'pie'
-        },
-        title: {
-          text: 'Default Title'
-        },
-        tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-          pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-              enabled: false
-            },
-            showInLegend: true
-          }
-        },
-        series: [{
-          type: 'pie',
-          name: 'Browser share',
-          data: [
-            ['Firefox', 45.0],
-            ['IE', 26.8],
-            ['Chrome', 12.8],
-            ['Safari', 8.5],
-            ['Opera', 6.2],
-            ['Others', 0.7]
-          ]
-        }]
-      },
+      chartDefaults: chartDefaults.pie,
       chartOptions: null,
-      tableHeaders: [
-        { text: 'Company', value: 'companyName', align: 'left' },
-        { text: 'Resolution', value: 'resolutionName', align: 'left' },
-        { text: 'Chart', value: 'chart', align: 'left', sortable: false },
-        { text: 'Support', value: 'support', align: 'left' },
-        { text: 'Origin', value: 'origin', align: 'left' }
-      ],
-      funds: [
-        {
-          id: '01',
-          name: 'ABC fund'
-        },
-        {
-          id: '02',
-          name: 'BCD fund'
-        },
-        {
-          id: '03',
-          name: 'CDE fund'
-        }
-      ],
       selectedFund: {
         id: '01',
         name: 'ABC fund'
-      },
-      resolutions: {
-        '01': [
-          {
-            companyName: '123 PLC',
-            resolutionName: 'Board remuneration',
-            support: 'no',
-            origin: '123 PLC'
-          },
-          {
-            companyName: '234 INC',
-            resolutionName: 'Stop selling infant milk powder in regions with no safe water',
-            chart: {
-              text: 'see chart',
-              props: {
-                title: {
-                  text: 'Stop selling infant milk powder in regions with no safe water',
-                  style: {
-                    'fontSize': '15px'
-                  }
-                },
-                series: [{
-                  type: 'pie',
-                  name: 'Votation status',
-                  data: [
-                    ['In favour', 50],
-                    ['Against', 20],
-                    ['Undecided', 10],
-                    ['Unanswered', 11]
-                  ]
-                }]
-              }
-            },
-            progress: '60',
-            support: 'yes',
-            origin: 'SVCHLD'
-          },
-          {
-            companyName: '345 AG',
-            resolutionName: 'Another resolution1',
-            progress: '20',
-            support: 'pending',
-            origin: 'AMNES'
-          },
-          {
-            companyName: '567 SA',
-            resolutionName: 'Another resolution2',
-            progress: '8',
-            support: 'yes',
-            origin: 'GRNPC'
-          },
-          {
-            companyName: '789 PLC',
-            resolutionName: 'Another resolution3',
-            progress: '85',
-            support: 'yes',
-            origin: 'OXFAM'
-          },
-          {
-            companyName: '910 INC',
-            resolutionName: 'Another resolution4',
-            progress: '60',
-            support: 'yes',
-            origin: 'AMNES'
-          },
-          {
-            companyName: '101 AG',
-            resolutionName: 'Another resolution5',
-            progress: '35',
-            support: 'yes',
-            origin: 'OXFAM'
-          }
-        ],
-        '02': [
-          {
-            companyName: '123 PLC',
-            resolutionName: 'Board remuneration',
-            progress: '50',
-            support: 'no',
-            origin: '123 PLC'
-          },
-          {
-            companyName: '234 INC',
-            resolutionName: 'Stop selling infant milk powder in regions with no safe water',
-            progress: '6',
-            support: 'yes',
-            origin: 'SVCHLD'
-          },
-          {
-            companyName: '345 AG',
-            resolutionName: 'Another resolution1',
-            progress: '70',
-            support: 'pending',
-            origin: 'AMNES'
-          },
-          {
-            companyName: '567 SA',
-            resolutionName: 'Another resolution2',
-            support: 'yes',
-            origin: 'GRNPC'
-          },
-          {
-            companyName: '789 PLC',
-            resolutionName: 'Another resolution3',
-            support: 'yes',
-            origin: 'OXFAM'
-          },
-          {
-            companyName: '910 INC',
-            resolutionName: 'Another resolution4',
-            support: 'yes',
-            origin: 'AMNES'
-          },
-          {
-            companyName: '101 AG',
-            resolutionName: 'Another resolution5',
-            support: 'yes',
-            origin: 'OXFAM'
-          }
-        ],
-        '03': [
-          {
-            companyName: '123 PLC',
-            resolutionName: 'Board remuneration',
-            progress: '60',
-            support: 'no',
-            origin: '123 PLC'
-          },
-          {
-            companyName: '234 INC',
-            resolutionName: 'Stop selling infant milk powder in regions with no safe water',
-            support: 'yes',
-            origin: 'SVCHLD'
-          },
-          {
-            companyName: '345 AG',
-            resolutionName: 'Another resolution1',
-            support: 'pending',
-            origin: 'AMNES'
-          },
-          {
-            companyName: '567 SA',
-            resolutionName: 'Another resolution2',
-            progress: '80',
-            support: 'yes',
-            origin: 'GRNPC'
-          },
-          {
-            companyName: '789 PLC',
-            resolutionName: 'Another resolution3',
-            progress: '8',
-            support: 'yes',
-            origin: 'OXFAM'
-          },
-          {
-            companyName: '910 INC',
-            resolutionName: 'Another resolution4',
-            support: 'yes',
-            origin: 'AMNES'
-          },
-          {
-            companyName: '101 AG',
-            resolutionName: 'Another resolution5',
-            support: 'yes',
-            origin: 'OXFAM'
-          }
-        ]
       }
     }
   },
   methods: {
     onSelectSideItem (id) {
-      console.log('CLICKED', id)
       this.selectedFund.id = id
     },
     showChart (opts) {
       console.log('Chart!!', opts)
       this.chartOptions = Object.assign(this.chartDefaults, opts)
+    },
+    fetchResolutions () {
+      console.log('FETCH RES')
+      return this.$store.dispatch('FETCH_RESOLUTIONS')
+    },
+    fetchFunds () {
+      console.log('FETCH FUND')
+      return this.$store.dispatch('FETCH_FUNDS')
     }
+  },
+  computed: mapGetters({
+    resolutions: 'getResolutions',
+    funds: 'getFunds'
+  }),
+  beforeMount () {
+    this.fetchResolutions()
+    this.fetchFunds()
   }
 }
 </script>
@@ -398,9 +190,26 @@ export default {
   font-size: 30px;
   line-height: 30px
 }
+table.table tbody tr:hover {
+  background: rgba(0,0,0,0.02);
+}
 .table__overflow.elevation-1 {
   overflow-x: inherit;
   overflow-y: visible;
+}
+.fund-name {
+  font-size: 0.7em;
+  color: black;
+  margin-left: 1rem;
+}
+.card--equal-hight {
+  height: 100% !important;
+}
+.card-actions--bottom {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 /*.table.table tbody tr:hover {
   background: rgba(0,0,0,0.05);

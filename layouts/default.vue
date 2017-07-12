@@ -30,6 +30,7 @@
       <v-toolbar-items class="hidden-sm-and-down">
         <router-link tag="button" type="button" class="btn btn--flat secondary secondary--text" to="/"><div class="btn__content">Home</div></router-link>
         <router-link tag="button" type="button" class="btn btn--flat secondary secondary--text" to="/about"><div class="btn__content">About</div></router-link>
+        <router-link tag="button" type="button" class="btn btn--flat secondary secondary--text" to="/signup-step-1"><div class="btn__content">Signup</div></router-link>
       </v-toolbar-items>
     </v-toolbar>
     <main>
