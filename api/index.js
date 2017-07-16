@@ -1,4 +1,7 @@
 import resolutionsMock from './resolutionsMock'
+import resolutionHeadersMock from './resolutionHeadersMock'
+import ngoFundsMock from './ngoFundsMock'
+import ngoFundsHeadersMock from './ngoFundsHeadersMock'
 import fundsMock from './fundsMock'
 
 /**
@@ -11,7 +14,7 @@ class Api {
    *
    * @returns {type}  description
    */
-  static getAllResolutions() {
+  static getAllResolutions(id) {
     /* eslint-enable */
     return new Promise(resolve => {
       setTimeout(() => {
@@ -34,7 +37,52 @@ class Api {
         //       reject()
         //     }
         //   })
-        resolve(Object.assign({}, resolutionsMock))
+        resolve(Object.assign([], resolutionsMock[id]))
+      }, 1000)
+    })
+  }
+
+  /* eslint-disable */
+  /**
+   * @static getAllResolutionHeaders - description
+   *
+   * @returns {type}  description
+   */
+  static getAllResolutionHeaders() {
+    /* eslint-enable */
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(Object.assign([], resolutionHeadersMock))
+      }, 1000)
+    })
+  }
+
+  /* eslint-disable */
+  /**
+   * @static getAllNgoFunds - description
+   *
+   * @returns {type}  description
+   */
+  static getAllNgoFunds(id) {
+    /* eslint-enable */
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(Object.assign([], ngoFundsMock[id]))
+      }, 1000)
+    })
+  }
+
+  /* eslint-disable */
+  /**
+   * @static getAllNgoFundsHeaders - description
+   *
+   * @returns {type}  description
+   */
+  static getAllNgoFundsHeaders() {
+    /* eslint-enable */
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(Object.assign([], ngoFundsHeadersMock))
       }, 1000)
     })
   }

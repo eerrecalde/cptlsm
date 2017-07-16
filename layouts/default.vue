@@ -3,19 +3,39 @@
     <v-navigation-drawer
       persistent
       v-model="drawer"
-      light
+      dark
+      class="primary"
       overflow
       disable-route-watcher
       absolute
     >
-      <v-list dense>
+      <v-list dense class="primary">
         <v-list-tile @click.native.stop="left = !left">
-          <v-list-tile-action>
-            <v-icon>exit_to_app</v-icon>
-          </v-list-tile-action>
-          <v-spacer></v-spacer>
           <v-list-tile-content>
-            <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
+            <v-list-tile-title>
+              <span class="text-logo">CAPITAL<span class="text-logo__subtext">us</span>M</span>
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile @click.native.stop="left = !left">
+          <v-list-tile-content>
+            <v-list-tile-action>
+              <router-link class="btn btn--flat white--text" :class="{'light-green--text': currentPage === 'HOME'}" to="/"><span class="btn__content">Home</span></router-link>
+            </v-list-tile-action>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile @click.native.stop="left = !left">
+          <v-list-tile-content>
+            <v-list-tile-action>
+              <router-link class="btn btn--flat white--text" to="/"><span class="btn__content">Profile</span></router-link>
+            </v-list-tile-action>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile @click.native.stop="left = !left">
+          <v-list-tile-content>
+            <v-list-tile-action>
+              <router-link v-if="variableLink.page" class="btn--badge-right btn btn--flat white--text" to="/"><span class="btn__content"><span v-badge="{value: variableLink.badgeCount, right: true}" class="red--after">{{variableLink.page}}</span></span></router-link>
+            </v-list-tile-action>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -23,15 +43,39 @@
     <v-toolbar class="blue-grey darken-3" dark>
       <v-toolbar-title>
         <span class="text-logo">CAPITAL<span class="text-logo__subtext">us</span>M</span>
-        <span class="page-title">{{currentPage}}</span>
+        <!-- <span class="page-title">{{currentPage}}</span> -->
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-side-icon @click.native.stop="drawer = !drawer" class="hidden-md-and-up"></v-toolbar-side-icon>
+
       <v-toolbar-items class="hidden-sm-and-down">
-        <router-link tag="button" type="button" class="btn btn--flat secondary secondary--text" to="/"><div class="btn__content">Home</div></router-link>
-        <router-link tag="button" type="button" class="btn btn--flat secondary secondary--text" to="/about"><div class="btn__content">About</div></router-link>
-        <router-link tag="button" type="button" class="btn btn--flat secondary secondary--text" to="/signup-step-1"><div class="btn__content">Signup</div></router-link>
+        <router-link class="btn btn--flat white--text" :class="{'light-green--text': currentPage === 'HOME'}" to="/"><span class="btn__content">Home</span></router-link>
+        <router-link class="btn btn--flat white--text" to="/"><span class="btn__content">Profile</span></router-link>
+        <router-link v-if="variableLink.page" class="btn--badge-right btn btn--flat white--text" to="/"><span class="btn__content"><span v-badge="{value: variableLink.badgeCount, right: true}" class="red--after">{{variableLink.page}}</span></span></router-link>
       </v-toolbar-items>
+
+      <v-spacer></v-spacer>
+
+      <v-toolbar-side-icon @click.native.stop="drawer = !drawer" class="hidden-md-and-up"></v-toolbar-side-icon>
+
+      <v-menu
+        class="hidden-sm-and-down"
+        transition="slide-y-transition"
+        offset-y
+      >
+        <v-btn class="btn btn--flat white--text" slot="activator">
+          <v-icon class="white--text">person</v-icon>Account<v-icon class="white--text">keyboard_arrow_down</v-icon></span>
+        </v-btn>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-title>Item 1</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-title>Item 2</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-title>Item 3</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </v-toolbar>
     <main>
       <v-container fluid>
@@ -44,6 +88,7 @@
   </v-app>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -55,11 +100,25 @@ export default {
   },
   computed: {
     currentPage () {
-      return (this.$route.path === '/') ? 'HOME' : this.$route.name.toUpperCase()
-    }
-  },
-  mounted () {
-    console.log('mounted', this.$route)
+      return (this.$route.path === '/') ? 'HOME' : (this.$route.name) ? this.$route.name.toUpperCase() : ''
+    },
+    variableLink () {
+      let page = ''
+      let badgeCount = 0
+      if (this.$route.path === '/') {
+        page = 'resolutions'
+      } else if (this.$route.path.indexOf('ngo/dashboard') > -1) {
+        page = 'messages'
+      }
+
+      badgeCount = (this[page]) ? this[page].length : 0
+
+      return {page, badgeCount}
+    },
+    ...mapGetters({
+      resolutions: 'getResolutions',
+      messages: 'getMessages'
+    })
   }
 }
 </script>
@@ -91,5 +150,16 @@ export default {
 
 .container {
   overflow-y: auto;
+}
+.toolbar__items .btn:first-child {
+  margin-left: 20px;
+}
+.btn--badge-right .btn__content {
+  padding-right: 40px;
+}
+
+.btn--badge-right .btn__content .badge:after {
+  top: -2px;
+  right: -25px;
 }
 </style>

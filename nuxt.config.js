@@ -17,7 +17,20 @@ module.exports = {
   },
 
   router: {
-    linkExactActiveClass: 'md-toggle'
+    extendRoutes (routes, resolve) {
+      routes.push(
+        {
+          name: 'signUp',
+          path: '/signup/:step',
+          component: resolve(__dirname, 'pages/signup.vue')
+        },
+        {
+          name: 'dashboard',
+          path: '/ngo/dashboard/:ngo_name',
+          component: resolve(__dirname, 'pages/dashboard.vue')
+        }
+      )
+    }
   },
   /*
   ** Customize the progress-bar color

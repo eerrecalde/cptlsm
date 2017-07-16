@@ -15,7 +15,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <router-link tag="button" type="button" class="btn primary" to="/signup-step-3">Submit</router-link>
+          <router-link tag="button" type="button" class="btn primary" to="/signup/step3">Submit</router-link>
         </v-card-actions>
       </v-card>
     </v-flex>

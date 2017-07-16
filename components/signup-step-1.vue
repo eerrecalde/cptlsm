@@ -50,7 +50,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <router-link tag="button" type="button" class="btn primary" to="/">Cancel</router-link>
-          <router-link tag="button" type="button" class="btn primary" to="/signup-step-2">Submit</router-link>
+          <router-link tag="button" type="button" class="btn primary" to="/signup/step2">Submit</router-link>
         </v-card-actions>
       </v-card>
     </v-flex>

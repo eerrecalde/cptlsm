@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3 class="text-xs-right"><span class="dark primary">NGO Logo</span></h3>
     <v-layout row wrap>
       <v-flex xs12 md3>
         <v-card tile class="card--equal-hight">
@@ -30,13 +31,22 @@
         <v-card tile>
           <v-card-title>
             <h5>Resolutions <span class="fund-name">{{selectedFund.name}}</span></h5>
+            <v-spacer></v-spacer>
+            <v-text-field
+              append-icon="search"
+              label="Search"
+              single-line
+              hide-details
+              v-model="search"
+            ></v-text-field>
           </v-card-title>
 
           <v-data-table
-            v-bind:headers="resolutions.headers"
-            :items="resolutions.data[selectedFund.id]"
-            hide-actions
+            v-bind:headers="resolutionHeaders"
+            :items="resolutions"
             class="elevation-1"
+            v-bind:search="search"
+            :loading="loadingDataTable"
           >
 
             <template slot="headerCell" scope="props">
@@ -87,6 +97,7 @@ export default {
       items: null,
       chartDefaults: chartDefaults.pie,
       chartOptions: null,
+      search: '',
       selectedFund: {
         id: '01',
         name: 'ABC fund'
@@ -96,26 +107,35 @@ export default {
   methods: {
     onSelectSideItem (id) {
       this.selectedFund.id = id
+      this.$store.dispatch('CLEAR_RESOLUTIONS')
+      this.fetchResolutions(id)
     },
     showChart (opts) {
-      console.log('Chart!!', opts)
       this.chartOptions = Object.assign(this.chartDefaults, opts)
     },
-    fetchResolutions () {
-      console.log('FETCH RES')
-      return this.$store.dispatch('FETCH_RESOLUTIONS')
+    fetchResolutionHeaders () {
+      return this.$store.dispatch('FETCH_RESOLUTION_HEADERS')
+    },
+    fetchResolutions (id) {
+      return this.$store.dispatch('FETCH_RESOLUTIONS', id)
     },
     fetchFunds () {
-      console.log('FETCH FUND')
       return this.$store.dispatch('FETCH_FUNDS')
     }
   },
-  computed: mapGetters({
-    resolutions: 'getResolutions',
-    funds: 'getFunds'
-  }),
+  computed: {
+    loadingDataTable () {
+      return (this.resolutions && this.resolutions.length) ? false : 'secondary'
+    },
+    ...mapGetters({
+      resolutions: 'getResolutions',
+      resolutionHeaders: 'getResolutionHeaders',
+      funds: 'getFunds'
+    })
+  },
   beforeMount () {
-    this.fetchResolutions()
+    this.fetchResolutionHeaders()
+    this.fetchResolutions('01')
     this.fetchFunds()
   }
 }
@@ -151,9 +171,6 @@ export default {
 {
   padding-top: 15px;
 }
-.card__title > h5 {
-  margin-bottom: 0;
-}
 .animated-progress {
   background-color: #EEE;
   margin: 3px 0;
@@ -186,24 +203,16 @@ export default {
   z-index: 1;
   top: 0;
   right: 0;
-  margin: 5px 10px;
+  padding: 10px;
+  margin: 3px;
   font-size: 30px;
-  line-height: 30px
+  line-height: 16px
 }
-table.table tbody tr:hover {
-  background: rgba(0,0,0,0.02);
-}
-.table__overflow.elevation-1 {
-  overflow-x: inherit;
-  overflow-y: visible;
-}
+
 .fund-name {
   font-size: 0.7em;
   color: black;
   margin-left: 1rem;
-}
-.card--equal-hight {
-  height: 100% !important;
 }
 .card-actions--bottom {
   display: inline-block;
@@ -214,4 +223,11 @@ table.table tbody tr:hover {
 /*.table.table tbody tr:hover {
   background: rgba(0,0,0,0.05);
 }*/
+.card__title > h5 {
+  margin-bottom: 0;
+}
+.input-group {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 </style>
