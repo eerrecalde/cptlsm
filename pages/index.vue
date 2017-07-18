@@ -46,7 +46,6 @@
             :items="resolutions"
             class="elevation-1"
             v-bind:search="search"
-            :loading="loadingDataTable"
           >
 
             <template slot="headerCell" scope="props">
@@ -84,14 +83,10 @@
 </template>
 
 <script>
-import Logo from '~components/Logo.vue'
 import chartDefaults from '~/api/chartDefaultsMock'
 import { mapGetters } from 'vuex'
 
 export default {
-  components: {
-    Logo
-  },
   data () {
     return {
       items: null,
@@ -124,9 +119,6 @@ export default {
     }
   },
   computed: {
-    loadingDataTable () {
-      return (this.resolutions && this.resolutions.length) ? false : 'secondary'
-    },
     ...mapGetters({
       resolutions: 'getResolutions',
       resolutionHeaders: 'getResolutionHeaders',

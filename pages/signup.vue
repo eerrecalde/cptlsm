@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import step1 from '~/components/signup-step-1'
-import step2 from '~/components/signup-step-2'
-import step3 from '~/components/signup-step-3'
+import step1 from '~/components/SignupStep1'
+import step2 from '~/components/SignupStep2'
+import step3 from '~/components/SignupStep3'
 export default {
   props: ['step'],
   components: {
@@ -19,6 +19,9 @@ export default {
   },
   mounted () {
     console.log('PROPS', this.step)
+    if (!this.step) {
+      this.$router.push('/signup/step1')
+    }
   }
 }
 </script>

@@ -1,0 +1,17 @@
+general:
+  branches:
+    ignore:
+      - gh-pages
+
+test:
+  override:
+    - exit 0
+
+dependencies:
+  pre:
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - ./deploy-ghpages.sh src
