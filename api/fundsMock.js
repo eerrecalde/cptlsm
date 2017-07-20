@@ -1,14 +1,14 @@
 export default [
   {
-    id: '01',
+    id: 1,
     name: 'ABC fund'
   },
   {
-    id: '02',
+    id: 2,
     name: 'BCD fund'
   },
   {
-    id: '03',
+    id: 3,
     name: 'CDE fund'
   }
 ]

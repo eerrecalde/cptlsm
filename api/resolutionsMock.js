@@ -1,5 +1,5 @@
 export default {
-  '01': [
+  1: [
     {
       companyName: '123 PLC',
       resolutionName: 'Board remuneration',
@@ -71,7 +71,7 @@ export default {
     }
   ],
 
-  '02': [
+  2: [
     {
       companyName: '123 PLC',
       resolutionName: 'Board remuneration',
@@ -118,7 +118,7 @@ export default {
       origin: 'OXFAM'
     }
   ],
-  '03': [
+  3: [
     {
       companyName: '123 PLC',
       resolutionName: 'Board remuneration',

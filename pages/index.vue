@@ -9,11 +9,10 @@
           </v-card-title>
 
           <v-list>
-            <v-list-tile v-for="fund in funds" :key="fund.id">
-              <v-list-tile-content @click.prevent="onSelectSideItem(fund.id)">
+            <v-list-tile v-for="fund in funds" :key="fund.id" :disabled="fund.pending">
+              <v-list-tile-content @click.prevent="onSelectSideItem(fund)">
                 <v-list-tile-title class="menu-button-text" :class="{'active': selectedFund.id === fund.id}">
-                  {{fund.name}}
-                  <!-- <a class="btn menu-button" :class="{'btn--active': selectedFund.id === fund.id}" href="" @click.prevent="onSelectSideItem(fund.id)">{{fund.name}}</a> -->
+                  {{fund.name}} <span v-if="fund.pending" class="pending-fund grey--text">(pending)</span>
                 </v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action v-if="selectedFund.id === fund.id">
@@ -22,9 +21,27 @@
             </v-list-tile>
           </v-list>
 
-          <v-card-actions class="card-actions--bottom">
-            <v-btn flat dark secondary>+ Add fund</v-btn>
-          </v-card-actions>
+          <div class="card-actions--bottom">
+            <v-card-actions v-if="createMode">
+              <v-flex xs12 sm8>
+                <v-text-field
+                  name="input-1-3"
+                  label="Name"
+                  v-model="newFundName"
+                  single-line
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm4 v-if="createMode">
+                <v-btn small flat @click.native="addNewFund()" :disabled="!newFundName"><v-icon>send</v-icon></v-btn>
+              </v-flex>
+            </v-card-actions>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn @click.native="createMode = !createMode" flat dark secondary><v-icon class="light-green--text">add</v-icon>Add fund</v-btn>
+            </v-card-actions>
+          </div>
+
         </v-card>
       </v-flex>
       <v-flex>
@@ -94,16 +111,19 @@ export default {
       chartOptions: null,
       search: '',
       selectedFund: {
-        id: '01',
+        id: 1,
         name: 'ABC fund'
-      }
+      },
+      createMode: false,
+      newFundName: ''
     }
   },
   methods: {
-    onSelectSideItem (id) {
-      this.selectedFund.id = id
+    onSelectSideItem (fund) {
+      if (fund.pending) return
+      this.selectedFund.id = fund.id
       this.$store.dispatch('CLEAR_RESOLUTIONS')
-      this.fetchResolutions(id)
+      this.fetchResolutions(fund.id)
     },
     showChart (opts) {
       this.chartOptions = Object.assign(this.chartDefaults, opts)
@@ -116,6 +136,12 @@ export default {
     },
     fetchFunds () {
       return this.$store.dispatch('FETCH_FUNDS')
+    },
+    addNewFund () {
+      console.log('clicked')
+      this.$store.dispatch('ADD_FUND', this.newFundName)
+      this.newFundName = ''
+      this.createMode = false
     }
   },
   computed: {
@@ -127,7 +153,7 @@ export default {
   },
   beforeMount () {
     this.fetchResolutionHeaders()
-    this.fetchResolutions('01')
+    this.fetchResolutions(1)
     this.fetchFunds()
   }
 }
@@ -177,6 +203,13 @@ export default {
 .menu-button-text.active {
   text-decoration: underline;
 }
+
+.pending .list__tile:hover {
+  background: transparent !important;
+}
+.pending .list__tile .menu-button-text {
+  cursor: default;
+}
 .chart-wrapper {
   position: relative;
 }
@@ -211,6 +244,7 @@ export default {
   position: absolute;
   bottom: 0;
   right: 0;
+  width: 100%;
 }
 /*.table.table tbody tr:hover {
   background: rgba(0,0,0,0.05);

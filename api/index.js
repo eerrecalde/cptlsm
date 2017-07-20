@@ -97,7 +97,7 @@ class Api {
     /* eslint-enable */
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve(Object.assign({}, fundsMock))
+        resolve(Object.assign([], fundsMock))
       }, 500)
     })
   }
