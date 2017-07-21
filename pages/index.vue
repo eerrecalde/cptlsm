@@ -144,7 +144,6 @@ export default {
       this.createMode = false
     }
   },
-  
   computed: {
     ...mapGetters({
       resolutions: 'getResolutions',

@@ -59,7 +59,7 @@ module.exports = {
   plugins: [
     // ssr: false to only include it on client-side
     // { src: '~plugins/vue-material.js', ssr: false },
-    { src: '~plugins/vuetify.js', ssr: false },
+    { src: '~plugins/vuetify.js', ssr: true },
     { src: '~plugins/vue-highcharts.js', ssr: true }
   ],
 
