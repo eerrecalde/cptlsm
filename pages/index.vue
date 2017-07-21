@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import chartDefaults from '~/api/chartDefaultsMock'
+import chartDefaults from '../api/chartDefaultsMock'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -144,6 +144,7 @@ export default {
       this.createMode = false
     }
   },
+  
   computed: {
     ...mapGetters({
       resolutions: 'getResolutions',

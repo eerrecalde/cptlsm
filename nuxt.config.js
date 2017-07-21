@@ -25,7 +25,7 @@ module.exports = {
           component: resolve(__dirname, 'pages/signup.vue')
         },
         {
-          name: 'ngo',
+          name: 'dashboard',
           path: '/ngo/dashboard/:ngo_name',
           component: resolve(__dirname, 'pages/dashboard.vue')
         }

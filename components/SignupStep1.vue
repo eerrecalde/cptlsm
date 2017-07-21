@@ -57,11 +57,6 @@
   </v-layout>
 </template>
 
-<script>
-export default {
-}
-</script>
-
 <style lang="css" scoped>
   .headline-form {
     text-decoration: underline;
