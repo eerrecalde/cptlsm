@@ -1,8 +1,13 @@
 version: 2
 jobs:
-   build:
-     steps:
-       - checkout
-       - run: karma start karma.conf.js
-       - run: npm run generated
-       - run: ./deploy-ghpages.sh .
+  build:
+    docker:
+      - image: circleci/node:latest
+    branches:
+      only:
+        - master
+    steps:
+      - run:  |
+        karma start karma.conf.js
+        npm run generated
+        ./deploy-ghpages.sh .
