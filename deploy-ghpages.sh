@@ -17,6 +17,11 @@ then
     exit 1
 fi
 
+git config --local -l
+
+echo "$GH_EMAIL"
+echo "$GH_NAME"
+
 # make a directory to put the gp-pages branch
 mkdir gh-pages-branch
 cd gh-pages-branch

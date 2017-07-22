@@ -24,9 +24,6 @@ jobs:
           name: Permissions
           command: chmod a+x ./deploy-ghpages.sh
       - run:
-          name: git identity
-          command: git config user.email "eerrecalde@gmail.com" && git config user.name "Emi"
-      - run:
           name: Deploying
           command: ./deploy-ghpages.sh dist
 
