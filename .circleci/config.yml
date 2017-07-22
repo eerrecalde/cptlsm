@@ -2,9 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.1.2
+      - image: selenium/standalone-chrome
         env:
-          - DISPLAY=:99
           - CHROME_BIN=/usr/bin/google-chrome
     steps:
       - checkout
