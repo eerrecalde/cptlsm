@@ -21,6 +21,9 @@ jobs:
           name: Generating Static content
           command: npm run generate
       - run:
+          name: Permissions
+          command: chmod a+x ./deploy-ghpages.sh
+      - run:
           name: Deploying
           command: ./deploy-ghpages.sh dist
 
