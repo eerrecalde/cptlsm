@@ -1,0 +1,37 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/latest
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - run:
+          name: Generating Static content
+          command: npm run generated
+      - run:
+          name: Deploying
+          command: ../deploy-ghpages.sh .
+
+  test:
+    docker:
+      - image: circleci/latest
+    steps:
+      - checkout
+      - run:
+          name: Running test
+          command: karma start karma.conf.js
+
+  workflows:
+    version: 2
+    build_and_test:
+      jobs:
+        - build
+        - test:
+            requires:
+              - build
+            filters:
+              branches:
+                only: master
