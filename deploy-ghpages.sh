@@ -17,21 +17,12 @@ then
     exit 1
 fi
 
-echo "001"
-git config --local -l
-
-echo "002"
-echo "$GH_NAME"
-
 # make a directory to put the gp-pages branch
 mkdir gh-pages-branch
 cd gh-pages-branch
 # now lets setup a new repo so we can update the gh-pages branch
 git config --global user.email "$GH_EMAIL" > /dev/null 2>&1
 git config --global user.name "$GH_NAME" > /dev/null 2>&1
-
-echo "003"
-git config --local -l
 
 git init
 git remote add --fetch origin "$remote"
@@ -48,7 +39,7 @@ else
 fi
 
 # copy over or recompile the new site
-cp -a "../${siteSource}/." .
+cp -a "../${siteSource}/." ./site/
 
 # stage any changes and new files
 git add -A

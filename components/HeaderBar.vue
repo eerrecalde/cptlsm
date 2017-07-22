@@ -51,6 +51,8 @@
         <router-link class="btn btn--flat white--text" :class="{'light-green--text': currentPage === 'HOME'}" to="/"><span class="btn__content">Home</span></router-link>
         <router-link class="btn btn--flat white--text" to="/"><span class="btn__content">Profile</span></router-link>
         <router-link v-if="variableLink.page" class="btn--badge-right btn btn--flat white--text" to="/"><span class="btn__content"><span v-badge="{value: variableLink.badgeCount, right: true}" class="red--after">{{variableLink.page}}</span></span></router-link>
+        <router-link class="btn btn--flat white--text" to="/signup"><span class="btn__content">(Signup)</span></router-link>
+        <router-link class="btn btn--flat white--text" to="/ngo/dashboard/NGO_NAME"><span class="btn__content">(Ngo Dashboard)</span></router-link>
       </v-toolbar-items>
 
       <v-spacer></v-spacer>
