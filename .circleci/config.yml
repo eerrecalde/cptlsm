@@ -9,9 +9,6 @@ jobs:
           name: node version and npm
           command: 'npm -v && node -v'
       - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - run:
           name: npminstall
           command: 'npm install'
 
