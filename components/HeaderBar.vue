@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import Account from '~components/account'
+import Account from './account'
 import { mapGetters } from 'vuex'
 
 export default {
