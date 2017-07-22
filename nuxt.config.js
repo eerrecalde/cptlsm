@@ -17,6 +17,7 @@ module.exports = {
   },
 
   router: {
+    base: '/cptlsm/',
     extendRoutes (routes, resolve) {
       routes.push(
         {
