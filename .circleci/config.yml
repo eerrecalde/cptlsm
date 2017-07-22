@@ -10,7 +10,7 @@ jobs:
           command: 'sudo npm install -g npm@latest'
       - run:
           name: karmacli
-          command: 'npm install -g karma-cli'
+          command: 'sudo npm install -g karma-cli'
 
   test:
     docker:
