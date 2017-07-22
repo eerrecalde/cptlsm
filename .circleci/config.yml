@@ -14,30 +14,12 @@ jobs:
       - run:
           name: npminstall
           command: 'npm install'
-
-  test:
-    docker:
-      - image: circleci/node:8.1.2
-    steps:
-      - checkout
       - run:
           name: Running test
           command: karma start karma.conf.js
-
-  generate:
-    docker:
-      - image: circleci/node:8.1.2
-    steps:
-      - checkout
       - run:
           name: Generating Static content
           command: npm run generated
-
-  deploy:
-    docker:
-      - image: circleci/node:8.1.2
-    steps:
-      - checkout
       - run:
           name: Deploying
           command: ../deploy-ghpages.sh .
@@ -47,15 +29,3 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - test:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
-      - generate:
-          requires:
-            - test
-      - deploy:
-          requires:
-            - generate
