@@ -2,17 +2,16 @@ version: 2
 jobs:
   build:
     docker:
+      - image: selenium/standalone-chrome:3.1.0
+        env:
+          - DISPLAY=:99
+          - CHROME_BIN=/usr/bin/google-chrome
       - image: circleci/node:8.1.2
         env:
           - DISPLAY=:99
           - CHROME_BIN=/usr/bin/google-chrome
     steps:
       - checkout
-      - run:
-          name: install chrome
-          command: |
-            sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-            sudo dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
       - run:
           name: node version and npm
           command: 'npm -v && node -v'
