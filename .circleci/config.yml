@@ -53,6 +53,6 @@ workflows:
       - generate:
           requires:
             - test
-      - deploy
+      - deploy:
           requires:
             - generate
