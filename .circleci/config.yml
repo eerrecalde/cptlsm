@@ -22,7 +22,7 @@ jobs:
       - checkout
       - run:
           name: Running test
-          command: node_modules/karma/bin/karma start karma.conf.js
+          command: karma start karma.conf.js
 
   generate:
     docker:
