@@ -7,10 +7,7 @@ jobs:
       - checkout
       - run:
           name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - run:
-          name: karmacli
-          command: 'sudo npm install -g karma-cli'
+          command: 'npm install -g npm@latest'
 
   test:
     docker:
@@ -19,7 +16,7 @@ jobs:
       - checkout
       - run:
           name: Running test
-          command: karma start karma.conf.js
+          command: node_modules/karma/bin/karma start karma.conf.js
 
   generate:
     docker:
