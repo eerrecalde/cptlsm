@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: selenium/standalone-chrome
+      - image: selenium/standalone-chrome:3.1.0
         env:
           - CHROME_BIN=/usr/bin/google-chrome
     steps:
