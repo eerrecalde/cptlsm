@@ -3,10 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/node:8.1.2
-        env:
-          - DISPLAY=:99
-          - CHROME_BIN=/usr/bin/google-chrome
-      - image: selenium/standalone-chrome:3.1.0
     steps:
       - checkout
       - run:
@@ -23,7 +19,7 @@ jobs:
           command: karma start karma.conf.js
       - run:
           name: Generating Static content
-          command: npm run generated
+          command: npm run generate
       - run:
           name: Deploying
           command: ../deploy-ghpages.sh .
