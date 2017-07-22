@@ -9,11 +9,8 @@ jobs:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
       - run:
-          name: npminstall
-          command: 'npm i'
-      - run:
           name: karmacli
-          command: 'npm i -g karma-cli'
+          command: 'npm install -g karma-cli'
 
   test:
     docker:
@@ -53,5 +50,9 @@ workflows:
           filters:
             branches:
               only: master
-      - generate
+      - generate:
+          requires:
+            - test
       - deploy
+          requires:
+            - generate
