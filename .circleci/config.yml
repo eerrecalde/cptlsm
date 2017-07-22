@@ -9,7 +9,7 @@ jobs:
           name: node version and npm
           command: 'npm -v && node -v'
       - run:
-          name: update-npm
+          name: install karma cli
           command: 'npm install -g karma-cli'
       - run:
           name: npminstall
