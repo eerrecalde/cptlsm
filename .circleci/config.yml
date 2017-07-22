@@ -25,7 +25,7 @@ jobs:
           command: npm run generate
       - run:
           name: Deploying
-          command: deploy-ghpages.sh dist
+          command: ./deploy-ghpages.sh dist
 
 workflows:
   version: 2
