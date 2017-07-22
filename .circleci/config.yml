@@ -21,8 +21,11 @@ jobs:
           name: Generating Static content
           command: npm run generate
       - run:
+          name: Building
+          command: npm run build
+      - run:
           name: Deploying
-          command: ../deploy-ghpages.sh .
+          command: ../deploy-ghpages.sh dist
 
 workflows:
   version: 2
