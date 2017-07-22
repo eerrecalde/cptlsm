@@ -18,11 +18,11 @@ jobs:
           name: Running test
           command: karma start karma.conf.js
       - run:
-          name: Generating Static content
-          command: npm run generate
-      - run:
           name: Building
           command: npm run build
+      - run:
+          name: Generating Static content
+          command: npm run generate
       - run:
           name: Deploying
           command: ../deploy-ghpages.sh dist
