@@ -65,6 +65,7 @@
 <script>
 import Account from './Account'
 import { mapGetters } from 'vuex'
+
 export default {
   components: {Account},
   data () {
