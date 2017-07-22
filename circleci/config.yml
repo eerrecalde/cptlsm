@@ -24,14 +24,14 @@ jobs:
           name: Running test
           command: karma start karma.conf.js
 
-  workflows:
-    version: 2
-    build_and_test:
-      jobs:
-        - build
-        - test:
-            requires:
-              - build
-            filters:
-              branches:
-                only: master
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
