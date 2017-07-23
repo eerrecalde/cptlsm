@@ -1,5 +1,5 @@
 export default {
-  '01': [
+  1: [
     {
       fundName: '7IM AAP Adventurous C Acc',
       group: '7IM Investment Funds',
@@ -22,7 +22,7 @@ export default {
     }
   ],
 
-  '02': [
+  2: [
     {
       fundName: '7IM AAP Adventurous C Acc',
       group: '7IM Investment Funds',
@@ -45,7 +45,7 @@ export default {
     }
   ],
 
-  '03': [
+  3: [
     {
       fundName: '7IM AAP Adventurous C Acc',
       group: '7IM Investment Funds',

@@ -18,10 +18,16 @@ module.exports = {
 
   router: {
     base: '/cptlsm/',
+    linkActiveClass: 'light-green--text',
     extendRoutes (routes, resolve) {
       routes.push(
         {
-          name: 'signUp',
+          name: 'resolutions',
+          path: '/resolutions',
+          component: resolve(__dirname, 'pages/resolutions.vue')
+        },
+        {
+          name: 'signup',
           path: '/signup/:step',
           component: resolve(__dirname, 'pages/signup.vue')
         },

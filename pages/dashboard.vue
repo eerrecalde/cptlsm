@@ -87,7 +87,7 @@ export default {
     })
   },
   beforeMount () {
-    this.fetchNgoFunds('01')
+    this.fetchNgoFunds(1)
     this.fetchNgoFundsHeaders()
   }
 }

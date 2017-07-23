@@ -11,32 +11,19 @@
       absolute
     >
       <v-list dense class="primary">
-        <v-list-tile @click.native.stop="left = !left">
+        <v-list-tile @click.native.stop="drawer = !drawer" class="text-logo__wrapper">
           <v-list-tile-content>
             <v-list-tile-title>
               <span class="text-logo">CAPITAL<span class="text-logo__subtext">us</span>M</span>
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click.native.stop="left = !left">
+        <v-list-tile v-for="lnk in headerMenuList" :key="lnk.text" :to="lnk.linkTo" @click.native.stop="drawer = !drawer" >
           <v-list-tile-content>
-            <v-list-tile-action>
-              <router-link class="btn btn--flat white--text" :class="{'light-green--text': currentPage === 'HOME'}" to="/"><span class="btn__content">Home</span></router-link>
-            </v-list-tile-action>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile @click.native.stop="left = !left">
-          <v-list-tile-content>
-            <v-list-tile-action>
-              <router-link class="btn btn--flat white--text" to="/"><span class="btn__content">Profile</span></router-link>
-            </v-list-tile-action>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile @click.native.stop="left = !left">
-          <v-list-tile-content>
-            <v-list-tile-action>
-              <router-link v-if="variableLink.page" class="btn--badge-right btn btn--flat white--text" to="/"><span class="btn__content"><span v-badge="{value: variableLink.badgeCount, right: true}" class="red--after">{{variableLink.page}}</span></span></router-link>
-            </v-list-tile-action>
+            <v-list-tile-title>
+              <span v-if="lnk.badge === undefined" class="side-menu-text">{{lnk.text}}</span>
+              <span v-else class="side-menu-text side-menu-text--with-badge"><span v-badge="{value: getBadge(lnk.badge), right: true}" class="red--after">{{lnk.text}}</span></span>
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -44,48 +31,63 @@
     <v-toolbar class="blue-grey darken-3" dark>
       <v-toolbar-title>
         <span class="text-logo">CAPITAL<span class="text-logo__subtext">us</span>M</span>
-        <!-- <span class="page-title">{{currentPage}}</span> -->
       </v-toolbar-title>
 
       <v-toolbar-items class="hidden-sm-and-down">
-        <router-link class="btn btn--flat white--text" :class="{'light-green--text': currentPage === 'HOME'}" to="/"><span class="btn__content">Home</span></router-link>
-        <router-link class="btn btn--flat white--text" to="/"><span class="btn__content">Profile</span></router-link>
-        <router-link v-if="variableLink.page" class="btn--badge-right btn btn--flat white--text" to="/"><span class="btn__content"><span v-badge="{value: variableLink.badgeCount, right: true}" class="red--after">{{variableLink.page}}</span></span></router-link>
-        <router-link class="btn btn--flat white--text" to="/signup"><span class="btn__content">(Signup)</span></router-link>
-        <router-link class="btn btn--flat white--text" to="/ngo/dashboard/NGO_NAME"><span class="btn__content">(Ngo Dashboard)</span></router-link>
+        <router-link v-for="lnk in headerMenuList" :key="lnk.text" class="btn btn--flat white--text" :class="{'btn--badge-right': lnk.badge !== undefined}" :to="lnk.linkTo">
+          <span v-if="lnk.badge === undefined" class="btn__content">{{lnk.text}}</span>
+          <span v-else class="btn__content"><span v-badge="{value: getBadge(lnk.badge), right: true}" class="red--after">{{lnk.text}}</span></span>
+        </router-link>
       </v-toolbar-items>
 
       <v-spacer></v-spacer>
 
+      <account></account>
       <v-toolbar-side-icon @click.native.stop="drawer = !drawer" class="hidden-md-and-up"></v-toolbar-side-icon>
 
-      <account></account>
     </v-toolbar>
   </div>
 </template>
 
 <script>
 import Account from './Account'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {Account},
+  props: ['resolutions', 'messages'],
   data () {
     return {
+      items: [
+        { title: 'Home', icon: 'dashboard' },
+        { title: 'About', icon: 'question_answer' }
+      ],
       drawer: false,
       drawerRight: true,
       right: null,
-      left: null
+      left: null,
+      headerMenuList: [
+        {
+          text: 'resolutions',
+          badge: 'resolutions',
+          linkTo: '/resolutions'
+        },
+        {
+          text: 'dashboard',
+          badge: 'messages',
+          linkTo: '/ngo/dashboard/ngoName'
+        },
+        {
+          text: '(signup)',
+          linkTo: '/signup'
+        }
+      ]
     }
   },
   computed: {
-    currentPage () {
-      return (this.$route.path === '/') ? 'HOME' : (this.$route.name) ? this.$route.name.toUpperCase() : ''
-    },
     variableLink () {
       let page = ''
       let badgeCount = 0
-      if (this.$route.path === '/') {
+      if (this.$route.path === '/resolutions') {
         page = 'resolutions'
       } else if (this.$route.path.indexOf('ngo/dashboard') > -1) {
         page = 'messages'
@@ -95,13 +97,31 @@ export default {
 
       return {page, badgeCount}
     },
+    resolutionsBadge () {
+      return (this.resolutions) ? this.resolutions.length : 0
+    },
+    dashboardBadge () {
+      return (this.messages) ? this.messages.length : 0
+    },
+    badges () {
+      return {
+        resolutions: (this.resolutions) ? this.resolutions.length : 0,
+        messages: (this.messages) ? this.messages.length : 0
+      }
+    },
     loading () {
       return this.$store.state.ajaxCallInProgress
-    },
-    ...mapGetters({
-      resolutions: 'getResolutions',
-      messages: 'getMessages'
-    })
+    }
+  },
+
+  beforeMount () {
+    if (this.$route.path === '/') this.$router.push('/resolutions')
+  },
+
+  methods: {
+    getBadge (txt) {
+      return this.badges[txt]
+    }
   }
 }
 </script>
@@ -115,6 +135,10 @@ export default {
     font-size: 19px;
     line-height: 21px;
     color: #ffffff;
+  }
+
+  .text-logo__wrapper {
+    padding-top: 10px;
   }
 
   .text-logo__subtext {
@@ -141,9 +165,9 @@ export default {
     padding-right: 40px;
   }
 
-  .btn--badge-right .btn__content .badge:after {
-    top: -2px;
-    right: -25px;
+  .badge:after {
+    top: -4px;
+    right: -27px;
   }
 
   .progress-linear {
@@ -157,5 +181,15 @@ export default {
 
   .progress-linear .progress-linear__bar__indeterminate:before, .progress-linear .progress-linear__bar__indeterminate:after {
     background: #8DC740;
+  }
+
+  .side-menu-text {
+    display: inline-block;
+    padding: 10px 0;
+    text-transform: uppercase;
+  }
+
+  .side-menu-text--with-badge {
+    padding-right: 40px;
   }
 </style>

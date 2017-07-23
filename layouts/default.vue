@@ -1,6 +1,6 @@
 <template>
   <v-app id="example-1" standalone>
-    <header-bar></header-bar>
+    <api-component></api-component>
     <main>
       <v-container fluid>
         <nuxt/>
@@ -12,8 +12,8 @@
   </v-app>
 </template>
 <script>
-import HeaderBar from '~/components/HeaderBar'
+import ApiComponent from '~/components/ApiComponent'
 export default {
-  components: {HeaderBar}
+  components: {ApiComponent}
 }
 </script>
