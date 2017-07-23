@@ -114,10 +114,6 @@ export default {
     }
   },
 
-  beforeMount () {
-    if (this.$route.path === '/') this.$router.push('/resolutions')
-  },
-
   methods: {
     getBadge (txt) {
       return this.badges[txt]
