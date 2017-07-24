@@ -6,7 +6,7 @@
 
 <script>
 import HeaderBar from '~/components/HeaderBar'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   components: {HeaderBar},
   computed: {
@@ -16,13 +16,13 @@ export default {
     })
   },
   methods: {
-    fetchNgoFunds (id) {
-      return this.$store.dispatch('FETCH_NGO_FUNDS', id)
-    },
-    fetchResolutions (id) {
-      return this.$store.dispatch('FETCH_RESOLUTIONS', id)
-    }
+    test () {},
+    ...mapActions({
+      fetchNgoFunds: 'FETCH_NGO_FUNDS', // map this.add() to this.$store.dispatch('FETCH_NGO_FUNDS')
+      fetchResolutions: 'FETCH_RESOLUTIONS' // map this.add() to this.$store.dispatch('FETCH_NGO_FUNDS')
+    })
   },
+
   mounted () {
     this.fetchNgoFunds(1)
     this.fetchResolutions(1)

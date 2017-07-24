@@ -101,7 +101,7 @@
 
 <script>
 import chartDefaults from '../api/chartDefaultsMock'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -122,27 +122,26 @@ export default {
     onSelectSideItem (fund) {
       if (fund.pending) return
       this.selectedFund.id = fund.id
-      this.$store.dispatch('CLEAR_RESOLUTIONS')
+      this.clearResolutions()
       this.fetchResolutions(fund.id)
     },
     showChart (opts) {
       this.chartOptions = Object.assign(this.chartDefaults, opts)
     },
-    fetchResolutionHeaders () {
-      return this.$store.dispatch('FETCH_RESOLUTION_HEADERS')
-    },
-    fetchResolutions (id) {
-      return this.$store.dispatch('FETCH_RESOLUTIONS', id)
-    },
-    fetchFunds () {
-      return this.$store.dispatch('FETCH_FUNDS')
-    },
     addNewFund () {
       console.log('clicked')
-      this.$store.dispatch('ADD_FUND', this.newFundName)
+      this.addFund(this.newFundName)
       this.newFundName = ''
       this.createMode = false
-    }
+    },
+    ...mapActions({
+      fetchNgoFunds: 'FETCH_NGO_FUNDS', // map this.add() to this.$store.dispatch('FETCH_NGO_FUNDS')
+      fetchResolutions: 'FETCH_RESOLUTIONS', // map this.add() to this.$store.dispatch('FETCH_NGO_FUNDS')
+      fetchResolutionHeaders: 'FETCH_RESOLUTION_HEADERS',
+      fetchFunds: 'FETCH_FUNDS',
+      clearResolutions: 'CLEAR_RESOLUTIONS',
+      addFund: 'ADD_FUND'
+    })
   },
   computed: {
     ...mapGetters({
