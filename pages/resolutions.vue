@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h3 class="text-xs-right"><span class="dark primary">NGO Logo</span></h3>
+    <h3 class='text-xs-right' :class="{'editing': editingNgoName}">
+      <span v-if="!editingNgoName" class="dark primary" @dblclick="editName(ngo_name)">{{ngo_name}}</span>
+      <input v-if="editingNgoName" class="edit" type="text" v-model="ngo_name" v-ngo-edit-focus="ngo_name == editingNgoName" @blur="doneEdit(ngo_name)" @keyup.enter="doneEdit(ngo_name)" @keyup.esc="cancelEdit(ngo_name)">
+    </h3>
     <v-layout row wrap>
       <v-flex xs12 md3>
         <v-card tile class="card--equal-hight">
@@ -47,7 +50,7 @@
       <v-flex>
         <v-card tile>
           <v-card-title>
-            <h5>Resolutions <span class="fund-name">{{selectedFund.name}}</span></h5>
+            <h5>Resolutions <small>({{filtredResolutions.length}})</small> <span class="fund-name">{{selectedFund.name}}</span></h5>
             <v-spacer></v-spacer>
             <v-text-field
               append-icon="search"
@@ -60,7 +63,7 @@
 
           <v-data-table
             v-bind:headers="resolutionHeaders"
-            :items="resolutions"
+            :items="filtredResolutions"
             class="elevation-1"
             v-bind:search="search"
           >
@@ -110,20 +113,22 @@ export default {
       chartDefaults: chartDefaults.pie,
       chartOptions: null,
       search: '',
+      ngo_name: 'NGO Name',
+      createMode: false,
+      newFundName: '',
+      beforeEditingNgoName: null,
+      editingNgoName: null,
       selectedFund: {
         id: 1,
-        name: 'ABC fund'
+        name: 'All resolutions'
       },
-      createMode: false,
-      newFundName: ''
+      resolutionFilters: []
     }
   },
   methods: {
     onSelectSideItem (fund) {
-      if (fund.pending) return
-      this.selectedFund.id = fund.id
-      this.clearResolutions()
-      this.fetchResolutions(fund.id)
+      this.selectedFund = fund
+      this.resolutionFilters = (fund.resolutions) ? fund.resolutions : []
     },
     showChart (opts) {
       this.chartOptions = Object.assign(this.chartDefaults, opts)
@@ -133,6 +138,21 @@ export default {
       this.addFund(this.newFundName)
       this.newFundName = ''
       this.createMode = false
+    },
+    editName (str) {
+      this.beforeEditingNgoName = str
+      this.editingNgoName = str
+    },
+    cancelEdit (str) {
+      this.editingNgoName = null
+      this.ngo_name = this.beforeEditingNgoName
+    },
+    doneEdit (str) {
+      if (!this.editingNgoName) {
+        return
+      }
+      this.editingNgoName = null
+      this.ngo_name = this.ngo_name.trim()
     },
     ...mapActions({
       fetchNgoFunds: 'FETCH_NGO_FUNDS', // map this.add() to this.$store.dispatch('FETCH_NGO_FUNDS')
@@ -148,12 +168,25 @@ export default {
       resolutions: 'getResolutions',
       resolutionHeaders: 'getResolutionHeaders',
       funds: 'getFunds'
-    })
+    }),
+    filtredResolutions () {
+      return (this.resolutionFilters.length)
+        ? this.resolutions.filter(el => this.resolutionFilters.indexOf(el.id) > -1)
+        : this.resolutions
+    }
   },
   beforeMount () {
     this.fetchResolutionHeaders()
     this.fetchResolutions(1)
     this.fetchFunds()
+  },
+
+  directives: {
+    'ngo-edit-focus': function (el, binding) {
+      if (binding.value) {
+        el.focus()
+      }
+    }
   }
 }
 </script>

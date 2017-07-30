@@ -7,9 +7,9 @@ export default {
   },
 
   actions: {
-    FETCH_RESOLUTIONS: ({ commit }, id) => {
+    FETCH_RESOLUTIONS: ({ commit }) => {
       commit('BEGIN_AJAX_CALL')
-      return Api.getAllResolutions(id).then(resolutions => {
+      return Api.getAllResolutions().then(resolutions => {
         commit('SET_RESOLUTIONS', { resolutions })
         commit('AJAX_CALL_FINISHED')
       }).catch(error => {
@@ -17,7 +17,7 @@ export default {
         throw error
       })
     },
-    CLEAR_RESOLUTIONS: ({ commit }, id) => {
+    CLEAR_RESOLUTIONS: ({ commit }) => {
       var resolutions = []
       commit('SET_RESOLUTIONS', { resolutions })
     },

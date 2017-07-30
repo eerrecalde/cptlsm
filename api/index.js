@@ -14,7 +14,7 @@ class Api {
    *
    * @returns {type}  description
    */
-  static getAllResolutions(id) {
+  static getAllResolutions() {
     /* eslint-enable */
     return new Promise(resolve => {
       setTimeout(() => {
@@ -37,7 +37,7 @@ class Api {
         //       reject()
         //     }
         //   })
-        resolve(Object.assign([], resolutionsMock[id]))
+        resolve(Object.assign([], resolutionsMock))
       }, 1000)
     })
   }
