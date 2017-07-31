@@ -14,7 +14,9 @@ export default {
   state: {
     funds: [],
     ngoFundsHeaders: [],
-    ngoFunds: []
+    ngoFunds: [],
+    ngos: [],
+    selectedNgo: ''
   },
 
   actions: {
@@ -32,6 +34,18 @@ export default {
 
     ADD_FUND: ({ commit }, name) => {
       commit('UPDATE_FUNDS', name)
+    },
+
+    FETCH_NGOS: ({ commit }) => {
+      commit('BEGIN_AJAX_CALL')
+
+      return Api.getAllNgos().then(ngos => {
+        commit('SET_NGOS', { ngos })
+        commit('AJAX_CALL_FINISHED')
+      }).catch(error => {
+        commit('AJAX_CALL_FINISHED')
+        throw error
+      })
     },
 
     FETCH_NGO_FUNDS: ({ commit }, id) => {
@@ -56,6 +70,10 @@ export default {
         commit('AJAX_CALL_FINISHED')
         throw error
       })
+    },
+
+    UPDATE_SELECTED_NGO: ({ commit }, name) => {
+      commit('SET_SELECTED_NGO', { name })
     }
   },
 
@@ -64,12 +82,21 @@ export default {
       state.funds = funds
     },
 
+    SET_NGOS: (state, { ngos }) => {
+      state.ngos = ngos
+      state.selectedNgo = ngos[0].name
+    },
+
     SET_NGO_FUNDS: (state, { funds }) => {
       state.ngoFunds = funds
     },
 
     SET_NGO_FUNDS_HEADERS: (state, { headers }) => {
       state.ngoFundsHeaders = headers
+    },
+
+    SET_SELECTED_NGO: (state, { name }) => {
+      state.selectedNgo = name
     },
 
     UPDATE_FUNDS: (state, name) => {
@@ -85,6 +112,8 @@ export default {
 
   getters: {
     getFunds: state => state.funds,
+    getNgos: state => state.ngos,
+    getSelectedNgo: state => state.selectedNgo,
     getNgoFunds: state => state.ngoFunds,
     getNgoFundsHeaders: state => state.ngoFundsHeaders
   }

@@ -1,9 +1,16 @@
 <template>
   <div>
-    <h3 class='text-xs-right' :class="{'editing': editingNgoName}">
-      <span v-if="!editingNgoName" class="dark primary" @dblclick="editName(ngo_name)">{{ngo_name}}</span>
-      <input v-if="editingNgoName" class="edit" type="text" v-model="ngo_name" v-ngo-edit-focus="ngo_name == editingNgoName" @blur="doneEdit(ngo_name)" @keyup.enter="doneEdit(ngo_name)" @keyup.esc="cancelEdit(ngo_name)">
-    </h3>
+    <v-layout row wrap>
+      <v-spacer></v-spacer>
+      <v-flex xs12 v-if="!editionMode" >
+        <h4 class='text-xs-right ngo-name' :class="{'editing': editionMode}">
+          <span class="" @click="editionMode = true">{{selectedNgo}}</span>
+        </h4>
+      </v-flex>
+      <v-flex xs4 v-if="editionMode">
+        <search-box @box-back="editionMode = false" @box-selected-item="editName" :list="ngos" box-id="ngos" :box-placeholder="selectedNgo" class="edit-ngo-name"></search-box>
+      </v-flex>
+    </v-layout>
     <v-layout row wrap>
       <v-flex xs12 md3>
         <v-card tile class="card--equal-hight">
@@ -104,20 +111,21 @@
 
 <script>
 import chartDefaults from '../api/chartDefaultsMock'
+import searchBox from '../components/SearchBox'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  components: {searchBox},
   data () {
     return {
       items: null,
       chartDefaults: chartDefaults.pie,
       chartOptions: null,
       search: '',
-      ngo_name: 'NGO Name',
+      ngo_name: 'CANCER RESEARCH UK',
       createMode: false,
       newFundName: '',
-      beforeEditingNgoName: null,
-      editingNgoName: null,
+      editionMode: false,
       selectedFund: {
         id: 1,
         name: 'All resolutions'
@@ -140,34 +148,39 @@ export default {
       this.createMode = false
     },
     editName (str) {
-      this.beforeEditingNgoName = str
-      this.editingNgoName = str
+      console.log('edit name', str)
+      this.updateSelectedNgo(str)
+      this.editionMode = false
     },
     cancelEdit (str) {
-      this.editingNgoName = null
-      this.ngo_name = this.beforeEditingNgoName
+      this.editionMode = false
     },
     doneEdit (str) {
-      if (!this.editingNgoName) {
-        return
-      }
-      this.editingNgoName = null
-      this.ngo_name = this.ngo_name.trim()
+      console.log('done edit')
+      this.editionMode = false
+    },
+    setNgoList (t) {
+      console.log('Received change', t)
+      this.fl.list = t
     },
     ...mapActions({
       fetchNgoFunds: 'FETCH_NGO_FUNDS', // map this.add() to this.$store.dispatch('FETCH_NGO_FUNDS')
+      fetchNgos: 'FETCH_NGOS',
       fetchResolutions: 'FETCH_RESOLUTIONS', // map this.add() to this.$store.dispatch('FETCH_NGO_FUNDS')
       fetchResolutionHeaders: 'FETCH_RESOLUTION_HEADERS',
       fetchFunds: 'FETCH_FUNDS',
+      updateSelectedNgo: 'UPDATE_SELECTED_NGO',
       clearResolutions: 'CLEAR_RESOLUTIONS',
       addFund: 'ADD_FUND'
     })
   },
   computed: {
     ...mapGetters({
+      ngos: 'getNgos',
       resolutions: 'getResolutions',
       resolutionHeaders: 'getResolutionHeaders',
-      funds: 'getFunds'
+      funds: 'getFunds',
+      selectedNgo: 'getSelectedNgo'
     }),
     filtredResolutions () {
       return (this.resolutionFilters.length)
@@ -179,6 +192,7 @@ export default {
     this.fetchResolutionHeaders()
     this.fetchResolutions(1)
     this.fetchFunds()
+    this.fetchNgos()
   },
 
   directives: {
@@ -287,5 +301,20 @@ export default {
 .input-group {
   margin-top: 0;
   margin-bottom: 0;
+}
+.edit-ngo-name {
+  padding-bottom: 18px;
+}
+
+.ngo-name {
+  margin-bottom: 10px;
+  padding: 7px 0;
+  border: 2px dashed transparent;
+  transition: 0.5s all;
+}
+
+.ngo-name:hover{
+  border-color: #ddd;
+  cursor: pointer;
 }
 </style>
