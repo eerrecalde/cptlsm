@@ -8,7 +8,7 @@
         </h4>
       </v-flex>
       <v-flex xs4 v-if="editionMode">
-        <search-box @box-back="editionMode = false" @box-selected-item="editName" :list="ngos" box-id="ngos" :box-placeholder="selectedNgo" class="edit-ngo-name"></search-box>
+        <search-box @on-box-back="editionMode = false" @on-box-selected-item="editName" :list="ngos" box-id="ngos-search-box" :box-placeholder="selectedNgo" class="edit-ngo-name"></search-box>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
@@ -33,16 +33,8 @@
 
           <div class="card-actions--bottom">
             <v-card-actions v-if="createMode">
-              <v-flex xs12 sm8>
-                <v-text-field
-                  name="input-1-3"
-                  label="Name"
-                  v-model="newFundName"
-                  single-line
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm4 v-if="createMode">
-                <v-btn small flat @click.native="addNewFund()" :disabled="!newFundName"><v-icon>send</v-icon></v-btn>
+              <v-flex xs12 v-if="createMode">
+                <search-box @on-box-back="createMode = false" @on-box-selected-item="addNewFund" :list="funds" box-id="funds-search-box" box-placeholder="Type fund name.." class="new-fund"></search-box>
               </v-flex>
             </v-card-actions>
 
@@ -124,7 +116,6 @@ export default {
       search: '',
       ngo_name: 'CANCER RESEARCH UK',
       createMode: false,
-      newFundName: '',
       editionMode: false,
       selectedFund: {
         id: 1,
@@ -141,14 +132,11 @@ export default {
     showChart (opts) {
       this.chartOptions = Object.assign(this.chartDefaults, opts)
     },
-    addNewFund () {
-      console.log('clicked')
-      this.addFund(this.newFundName)
-      this.newFundName = ''
+    addNewFund (fund) {
+      this.addFund(fund)
       this.createMode = false
     },
     editName (str) {
-      console.log('edit name', str)
       this.updateSelectedNgo(str)
       this.editionMode = false
     },
@@ -156,11 +144,9 @@ export default {
       this.editionMode = false
     },
     doneEdit (str) {
-      console.log('done edit')
       this.editionMode = false
     },
     setNgoList (t) {
-      console.log('Received change', t)
       this.fl.list = t
     },
     ...mapActions({

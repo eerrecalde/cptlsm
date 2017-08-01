@@ -35,7 +35,11 @@ export default {
         let keys = Object.keys(el)
         let counter = 0
         keys.forEach(k => {
-          if (el[k].toLowerCase().indexOf(query.toLowerCase()) > -1) counter += 1
+          if (typeof el[k] === 'string') {
+            if (el[k].toLowerCase().indexOf(query.toLowerCase()) > -1) counter += 1
+          } else {
+            counter += (el[k] === query) ? 1 : 0
+          }
         })
         return counter > 0
       })

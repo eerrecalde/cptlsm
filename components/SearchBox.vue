@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
     <v-text-field
-      :name="`search-box-${boxId}`"
+      :name="boxId"
       v-model="fl.searchQuery"
       :label="boxPlaceholder || 'Type something...'"
       hide-details
@@ -39,12 +39,10 @@ export default {
   },
   methods: {
     onBackEvent () {
-      console.log('BLURRR')
-      this.$emit('box-back')
+      this.$emit('on-box-back')
     },
     onSelectedItemEvent (txt) {
-      console.log('selected item', txt)
-      this.$emit('box-selected-item', txt)
+      this.$emit('on-box-selected-item', txt)
       this.fl.searchQuery = ''
     }
   }
