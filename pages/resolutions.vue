@@ -74,14 +74,16 @@
             </template>
 
             <template slot="items" scope="props">
-              <td>{{ props.item.companyName }}</td>
+              <td style="width: 70px">{{ props.item.companyName }}</td>
               <td>
                 <span>{{ props.item.resolutionName }}</span>
                 <div v-if="props.item.progress" class="animated-progress">
-                  <div class="animated-progress__bar secondary" :style="{ width: props.item.progress + '%' }">{{props.item.progress}}%</div>
+                  <div class="animated-progress__bar secondary" :style="{ width: props.item.progress + '%' }">
+                    <span class="animated-progress__number" :class="{small: props.item.progress < 10}">{{props.item.progress}}%</span>
+                  </div>
                 </div>
               </td>
-              <td class="chart-wrapper">
+              <td class="chart-wrapper" style="width: 20px">
                 <v-btn icon class="light-green--text" v-if="props.item.chart" @click.native="() => showChart(props.item.chart.props)" v-tooltip:right="{ 'html': props.item.chart.text }">
                   <v-icon>equalizer</v-icon>
                 </v-btn>
@@ -90,8 +92,8 @@
                   <highcharts :options="chartOptions" ref="highcharts"></highcharts>
                 </v-card>
               </td>
-              <td>{{ props.item.support }}</td>
-              <td>{{ props.item.origin }}</td>
+              <td style="width: 30px">{{ props.item.support }}</td>
+              <td style="width: 20px">{{ props.item.origin }}</td>
             </template>
 
           </v-data-table>
@@ -228,10 +230,20 @@ export default {
 
 .animated-progress__bar {
   width: 0%;
-  color: white;
-  text-align: center;
+  text-align: right;
   transition: 1s;
 }
+
+.animated-progress__number {
+  color: white;
+  padding-right: 5px;
+}
+
+.animated-progress__number.small {
+  color: black;
+  margin-right: -27px;
+}
+
 .menu-button-text.active {
   font-weight: bold;
 }
