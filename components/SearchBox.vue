@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import filtredList from '../components/FiltredList'
+import filtredList from './FiltredList.vue'
 export default {
   props: ['list', 'box-id', 'box-placeholder'],
   components: {filtredList},

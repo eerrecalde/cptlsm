@@ -105,7 +105,7 @@
 
 <script>
 import chartDefaults from '../api/chartDefaultsMock'
-import searchBox from '../components/SearchBox'
+import searchBox from '../components/SearchBox.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
